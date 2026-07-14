@@ -1,4 +1,6 @@
-﻿const experience = [
+import { TestimonialsCarousel } from "./TestimonialsCarousel";
+
+const experience = [
   {
     dates: "Apr 2026 - Present",
     company: "Arizona State University",
@@ -83,19 +85,43 @@ const projects = [
 const testimonials = [
   {
     quote:
-      "Jacob possessed a rare ability to translate technical complexity into solutions that actually drove results for customers.",
-    name: "Tony Villanova",
-    title: "VP, Technology Partnerships - Paccurate",
-  },
-  {
-    quote:
-      "Jacob brings a hunger to learn along with a friendly and collaborative attitude to the workplace. Any team would be happy to have him on board.",
+      "Jacob was a consistently supportive, curious and eager member of our data team. He was always ready to collaborate and experiment with new data workflows in myriad of tools: R, Python, Google Colab and more. His contributions helped shape the data processing pipeline for our GTM and customer success organizations, as well as informed the long-term direction of product innovations to power customer-facing analysis tools on our roadmap. Jacob brings a hunger to learn along with a friendly and collaborative attitude to the workplace. Any team would be happy to have him on board!",
     name: "Dan Norton",
-    title: "VP, Product - Paccurate",
+    title: "VP of Product - Paccurate",
   },
   {
     quote:
-      "He zeroed in on the most valuable pieces of data and turned them into dashboards that displayed information relevant for our customers.",
+      "I had the pleasure to work with Jacob during his time at Paccurate, and even in the limited time we overlapped, his impact was clear. He possessed a rare ability to translate technical complexity into solutions that actually drove results for customers. From building custom analytics to supporting pre-sales efforts with sharp, tailored demos, he consistently made things easier for both the team and our clients. Smart, collaborative, and easy to work with. He was a real asset.",
+    name: "Tony Villanova",
+    title: "VP of Technology Partnerships - Paccurate",
+  },
+  {
+    quote:
+      "When I worked with Jacob, he always did a wonderful job enabling his sales team with robust data analyses and data visualizations. If I were a sales organization looking for a data analyst to support a quantitative, ROI-based sales process, I would be confident in Jacob's abilities.",
+    name: "Vance Reeds",
+    title: "Head of Sales - Paccurate",
+  },
+  {
+    quote:
+      "Where I was focused on growth marketing, Jacob specialised in data analytics within the product team. Communicating with Jacob was easy, and he was able to articulate clearly ways to glean insights for different initiatives and objectives on the marketing and product front. Jacob's reputation for clear thinking and analytical depth was evident across the organisation. What consistently stood out was his ability to translate complex data into meaningful insights that supported broader business goals. He approached problems with a strong data-driven mindset, always seeking measurable outcomes and always grounded in curiosity. Equally important, he is genuinely great to work with: open, approachable, and collaborative. His initiative in exploring ideas and engaging across departments made him a valuable partner in conversations that bridged analytics to benefit other functions, not just product. I'm confident he will be an asset to any team looking for someone who can combine thorough analysis with clear communication and a growth-focused perspective.",
+    name: "Neil Patel",
+    title: "Lead Marketing Consultant - Paccurate",
+  },
+  {
+    quote:
+      "Transforming high-stakes projects with precision analysis - Jacob's contributions are crucial to the success of business initiatives. Seamlessly aligning ETL automation with team goals, Jacob drives essential operational efficiencies, continuously advancing his scope clarity and project execution.",
+    name: "Amazon Performance Feedback",
+    title: "Business Analyst Impact - Amazon",
+  },
+  {
+    quote:
+      "Jacob is a dedicated, hard worker who loves analytics. He is not only extremely skilled but has fun practicing code in his spare time. I would recommend him to anyone who is looking for a rising star in the analytics space.",
+    name: "Anthony Mullins",
+    title: "Data Analyst - Amazon",
+  },
+  {
+    quote:
+      "Data is really only valuable once it's turned into information; otherwise, it's just millions of numbers in a database. Fortunately, Jacob is the data wizard capable of reconstructing those millions of arbitrary points of data into actual information. When we worked together, I saw him swim through data like a fish swims through water, zeroing in on the most valuable pieces of data and spinning them into graphs and dashboards that displayed actual information relevant for our customers. His efforts equipped me to have more intelligent, data-backed recommendations for customers, elevating my ability to have a rapid, positive impact. There are lots of data lovers out there, but Jacob is a cut above the rest. He's intensely curious and creative, and his curiosity is only outmatched by his capacity to constantly listen to feedback and continue improving. Every team out there needs a Jacob.",
     name: "Jared Jaramillo",
     title: "Customer Success Manager - Paccurate",
   },
@@ -267,16 +293,9 @@ export default function Home() {
       <section className="section testimonials-section">
         <div className="section-heading">
           <div><p className="section-kicker">04 / In their words</p><h2>Trusted across the table.</h2></div>
-          <p>Feedback from product, partnerships, and customer-facing leaders.</p>
+          <p>Browse every recommendation from leaders and teammates across product, sales, marketing, customer success, and analytics.</p>
         </div>
-        <div className="testimonial-grid">
-          {testimonials.map((testimonial) => (
-            <figure key={testimonial.name}>
-              <blockquote>“{testimonial.quote}”</blockquote>
-              <figcaption><strong>{testimonial.name}</strong><span>{testimonial.title}</span></figcaption>
-            </figure>
-          ))}
-        </div>
+        <TestimonialsCarousel testimonials={testimonials} />
       </section>
 
       <section className="contact-section">

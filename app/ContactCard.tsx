@@ -61,7 +61,7 @@ export function ContactCard() {
   return (
     <>
       <button className="header-cta contact-card-trigger" type="button" onClick={openCard} ref={triggerRef}>
-        Let&apos;s talk <span>&nearr;</span>
+        Let&apos;s talk <span>{"\u2197"}</span>
       </button>
 
       {isOpen && (
@@ -89,7 +89,7 @@ export function ContactCard() {
                 >
                   <span>{link.label}</span>
                   <strong>{link.detail}</strong>
-                  <b aria-hidden="true">&nearr;</b>
+                  <b aria-hidden="true">{"\u2197"}</b>
                 </a>
               ))}
             </div>

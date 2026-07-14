@@ -79,6 +79,32 @@ h1 em, .contact-section h2 em { font-family: Georgia, "Times New Roman", serif; 
 .button-primary:hover { background: #292b31; }
 .button-primary span { color: var(--teal); }
 .button-secondary:hover { background: white; }
+.resume-request-trigger { background: transparent; cursor: pointer; font-family: inherit; }
+.resume-request-trigger span { color: #7149d2; }
+.resume-request-overlay { position: fixed; inset: 0; z-index: 1000; padding: 20px; display: grid; place-items: center; background: rgba(16,17,20,.76); backdrop-filter: blur(8px); animation: request-overlay-in .2s ease both; }
+.resume-request-dialog { position: relative; width: min(760px, 100%); max-height: calc(100vh - 40px); overflow-y: auto; padding: clamp(32px,5vw,58px); background: var(--paper-bright); border: 1px solid var(--line); box-shadow: 18px 18px 0 var(--violet); animation: request-dialog-in .25s ease both; }
+.resume-request-dialog h2 { max-width: 620px; margin: 0 0 20px; font-size: clamp(42px,6vw,68px); line-height: .96; letter-spacing: -.055em; }
+.resume-request-close { position: absolute; top: 18px; right: 18px; width: 42px; height: 42px; border: 1px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; font: 400 27px/1 Arial,sans-serif; }
+.resume-request-close:hover, .resume-request-close:focus-visible { background: var(--ink); color: white; }
+.resume-request-intro, .resume-request-success > p:not(.section-kicker) { max-width: 600px; margin-bottom: 34px; color: #555759; font-size: 15px; line-height: 1.65; }
+.resume-request-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+.resume-request-fields label { display: flex; flex-direction: column; gap: 9px; }
+.resume-request-fields label > span { display: flex; justify-content: space-between; color: #343638; font: 700 10px/1.2 var(--font-geist-mono),monospace; text-transform: uppercase; letter-spacing: .08em; }
+.resume-request-fields label > span b { color: #7350c7; font-size: 8px; }
+.resume-request-fields input, .resume-request-fields textarea { width: 100%; border: 1px solid #bdb8ad; border-radius: 0; background: white; color: var(--ink); padding: 14px 15px; font: 400 15px/1.45 Arial,Helvetica,sans-serif; }
+.resume-request-fields input { min-height: 50px; }
+.resume-request-fields textarea { resize: vertical; min-height: 132px; }
+.resume-request-fields input:focus, .resume-request-fields textarea:focus { outline: 3px solid rgba(167,131,255,.45); border-color: #7350c7; }
+.resume-request-note { grid-column: 1 / -1; }
+.resume-request-honeypot { display: none !important; }
+.resume-request-privacy { margin: 18px 0; color: var(--muted); font: 500 9px/1.55 var(--font-geist-mono),monospace; }
+.resume-request-error { margin: 0 0 18px; padding: 12px 14px; border-left: 3px solid #a44152; background: #f7e7e9; color: #772d3a; font-size: 13px; line-height: 1.5; }
+.resume-request-error a { text-decoration: underline; font-weight: 700; }
+.resume-request-submit { cursor: pointer; }
+.resume-request-submit:disabled { cursor: wait; opacity: .65; transform: none; }
+.resume-request-success { min-height: 360px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+@keyframes request-overlay-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes request-dialog-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 .location { margin: 28px 0 0; color: var(--muted); display: flex; align-items: center; gap: 10px; font: 600 11px/1 var(--font-geist-mono), monospace; text-transform: uppercase; letter-spacing: .08em; }
 .location i { width: 3px; height: 3px; border-radius: 50%; background: currentColor; }
 
@@ -170,7 +196,7 @@ h1 em, .contact-section h2 em { font-family: Georgia, "Times New Roman", serif; 
 .testimonial-carousel { border-top: 1px solid var(--line); outline: none; touch-action: pan-y; }
 .testimonial-carousel:focus-visible { outline: 3px solid var(--violet); outline-offset: 7px; }
 .testimonial-card-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid var(--line); }
-.testimonial-card { position: relative; margin: 0; min-height: 590px; padding: 34px 30px 30px; border-right: 1px solid var(--line); display: flex; flex-direction: column; overflow: hidden; animation: testimonial-in .35s ease both; }
+.testimonial-card { position: relative; margin: 0; min-height: 590px; padding: 34px 30px 30px; border-right: 1px solid var(--line); display: flex; flex-direction: column; overflow: hidden; }
 .testimonial-card:last-child { border-right: 0; }
 .testimonial-quote-mark { height: 58px; color: var(--violet); font: 400 80px/.9 Georgia,"Times New Roman",serif; }
 .testimonial-card blockquote { margin: 18px 0 0; font: 400 clamp(17px,1.35vw,21px)/1.52 Georgia,"Times New Roman",serif; letter-spacing: -.018em; }
@@ -187,7 +213,18 @@ h1 em, .contact-section h2 em { font-family: Georgia, "Times New Roman", serif; 
 .carousel-arrows button { width: 48px; height: 48px; border: 1px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; font-size: 20px; transition: background .2s ease, color .2s ease; }
 .carousel-arrows button:hover, .carousel-arrows button:focus-visible { background: var(--ink); color: white; }
 .carousel-hint { margin: 12px 0 0; text-align: right; color: var(--muted); font: 600 9px/1.5 var(--font-geist-mono),monospace; text-transform: uppercase; letter-spacing: .08em; }
-@keyframes testimonial-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.testimonial-card-grid.is-next .testimonial-card { animation: testimonial-deal-next .56s cubic-bezier(.22,.9,.28,1) both; }
+.testimonial-card-grid.is-previous .testimonial-card { animation: testimonial-deal-previous .56s cubic-bezier(.22,.9,.28,1) both; }
+@keyframes testimonial-deal-next {
+  0% { opacity: 0; transform: translate3d(42px,12px,0) rotate(1.4deg) scale(.965); }
+  68% { opacity: 1; transform: translate3d(-5px,-2px,0) rotate(-.25deg) scale(1.006); }
+  100% { opacity: 1; transform: translate3d(0,0,0) rotate(0) scale(1); }
+}
+@keyframes testimonial-deal-previous {
+  0% { opacity: 0; transform: translate3d(-42px,12px,0) rotate(-1.4deg) scale(.965); }
+  68% { opacity: 1; transform: translate3d(5px,-2px,0) rotate(.25deg) scale(1.006); }
+  100% { opacity: 1; transform: translate3d(0,0,0) rotate(0) scale(1); }
+}
 .contact-section { background: var(--violet); text-align: center; padding: 120px 32px; }
 .contact-section .section-kicker { color: var(--ink); }
 .contact-section h2 { margin: 0 auto 26px; font-size: clamp(54px, 7vw, 106px); line-height: .92; letter-spacing: -.06em; }
@@ -227,6 +264,12 @@ footer > a { justify-self:end; }
   h1 { font-size: clamp(52px, 17vw, 78px); }
   .hero-intro { font-size:16px; }
   .button { width:100%;justify-content:space-between; }
+  .resume-request-overlay { padding: 10px; }
+  .resume-request-dialog { max-height: calc(100vh - 20px); padding: 34px 20px 28px; box-shadow: 8px 8px 0 var(--violet); }
+  .resume-request-dialog h2 { padding-right: 30px; font-size: 43px; }
+  .resume-request-fields { grid-template-columns: 1fr; }
+  .resume-request-note { grid-column: auto; }
+  .resume-request-close { top: 12px; right: 12px; width: 38px; height: 38px; }
   .hero-visual { min-height:430px;box-shadow:10px 10px 0 var(--violet);padding:18px; }
   .visual-metrics { gap:8px; }
   .visual-metrics strong { font-size:28px; }

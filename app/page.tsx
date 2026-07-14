@@ -1,3 +1,4 @@
+import { ResumeRequest } from "./ResumeRequest";
 import { TestimonialsCarousel } from "./TestimonialsCarousel";
 
 const experience = [
@@ -189,7 +190,7 @@ export default function Home() {
           </p>
           <div className="hero-actions">
             <a className="button button-primary" href="#work">Explore selected work <span>↓</span></a>
-            <a className="button button-secondary" href="/Jacob_Stack_Resume.pdf" target="_blank" rel="noreferrer">View résumé <span>↗</span></a>
+            <ResumeRequest />
           </div>
           <p className="location">Phoenix, Arizona <i /> Open to relocation</p>
         </div>

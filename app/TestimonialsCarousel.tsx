@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Testimonial = {
   quote: string;
@@ -8,15 +8,49 @@ type Testimonial = {
   title: string;
 };
 
+type Direction = "next" | "previous";
+
 export function TestimonialsCarousel({ testimonials }: { testimonials: Testimonial[] }) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(3);
+  const [activePage, setActivePage] = useState(0);
+  const [direction, setDirection] = useState<Direction>("next");
   const [touchStart, setTouchStart] = useState<number | null>(null);
+
+  useEffect(() => {
+    const mobileQuery = window.matchMedia("(max-width: 720px)");
+    const tabletQuery = window.matchMedia("(max-width: 980px)");
+
+    const updateVisibleCount = () => {
+      const nextCount = mobileQuery.matches ? 1 : tabletQuery.matches ? 2 : 3;
+      setVisibleCount(nextCount);
+      setActivePage(0);
+    };
+
+    updateVisibleCount();
+    mobileQuery.addEventListener("change", updateVisibleCount);
+    tabletQuery.addEventListener("change", updateVisibleCount);
+
+    return () => {
+      mobileQuery.removeEventListener("change", updateVisibleCount);
+      tabletQuery.removeEventListener("change", updateVisibleCount);
+    };
+  }, []);
+
+  const pageCount = Math.ceil(testimonials.length / visibleCount);
+  const startIndex = activePage * visibleCount;
   const visibleTestimonials = [0, 1, 2].map(
-    (offset) => testimonials[(activeIndex + offset) % testimonials.length],
+    (offset) => testimonials[(startIndex + offset) % testimonials.length],
   );
 
-  const goTo = (index: number) => {
-    setActiveIndex((index + testimonials.length) % testimonials.length);
+  const movePage = (amount: number) => {
+    setDirection(amount > 0 ? "next" : "previous");
+    setActivePage((current) => (current + amount + pageCount) % pageCount);
+  };
+
+  const goToPage = (page: number) => {
+    if (page === activePage) return;
+    setDirection(page > activePage ? "next" : "previous");
+    setActivePage(page);
   };
 
   return (
@@ -27,20 +61,28 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Testimoni
       aria-label="Professional recommendations"
       tabIndex={0}
       onKeyDown={(event) => {
-        if (event.key === "ArrowLeft") goTo(activeIndex - 1);
-        if (event.key === "ArrowRight") goTo(activeIndex + 1);
+        if (event.key === "ArrowLeft") movePage(-1);
+        if (event.key === "ArrowRight") movePage(1);
       }}
       onTouchStart={(event) => setTouchStart(event.changedTouches[0].clientX)}
       onTouchEnd={(event) => {
         if (touchStart === null) return;
         const distance = event.changedTouches[0].clientX - touchStart;
-        if (Math.abs(distance) > 50) goTo(activeIndex + (distance < 0 ? 1 : -1));
+        if (Math.abs(distance) > 50) movePage(distance < 0 ? 1 : -1);
         setTouchStart(null);
       }}
     >
-      <div className="testimonial-card-grid" aria-live="polite">
+      <div
+        className={`testimonial-card-grid is-${direction}`}
+        key={`${visibleCount}-${activePage}`}
+        aria-live="polite"
+      >
         {visibleTestimonials.map((testimonial, offset) => (
-          <figure className="testimonial-card" key={`${activeIndex}-${testimonial.name}`}>
+          <figure
+            className="testimonial-card"
+            key={`${startIndex}-${offset}-${testimonial.name}`}
+            style={{ animationDelay: `${offset * 80}ms` }}
+          >
             <span className="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
             <blockquote>{testimonial.quote}</blockquote>
             <figcaption>
@@ -48,31 +90,31 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Testimoni
               <span>{testimonial.title}</span>
             </figcaption>
             <span className="testimonial-card-number" aria-hidden="true">
-              {String(((activeIndex + offset) % testimonials.length) + 1).padStart(2, "0")}
+              {String(((startIndex + offset) % testimonials.length) + 1).padStart(2, "0")}
             </span>
           </figure>
         ))}
       </div>
 
       <div className="carousel-controls">
-        <div className="carousel-dots" aria-label="Choose a recommendation">
-          {testimonials.map((testimonial, index) => (
+        <div className="carousel-dots" aria-label="Choose a recommendation group">
+          {Array.from({ length: pageCount }, (_, page) => (
             <button
-              className={index === activeIndex ? "active" : ""}
+              className={page === activePage ? "active" : ""}
               type="button"
-              key={testimonial.name}
-              aria-label={`Start with recommendation ${index + 1} from ${testimonial.name}`}
-              aria-current={index === activeIndex ? "true" : undefined}
-              onClick={() => goTo(index)}
+              key={page}
+              aria-label={`Show recommendation group ${page + 1} of ${pageCount}`}
+              aria-current={page === activePage ? "true" : undefined}
+              onClick={() => goToPage(page)}
             />
           ))}
         </div>
         <div className="carousel-arrows">
-          <button type="button" aria-label="Previous recommendations" onClick={() => goTo(activeIndex - 1)}>&larr;</button>
-          <button type="button" aria-label="Next recommendations" onClick={() => goTo(activeIndex + 1)}>&rarr;</button>
+          <button type="button" aria-label="Previous recommendation group" onClick={() => movePage(-1)}>&larr;</button>
+          <button type="button" aria-label="Next recommendation group" onClick={() => movePage(1)}>&rarr;</button>
         </div>
       </div>
-      <p className="carousel-hint">Use arrows, keyboard keys, dots, or swipe to browse all recommendations.</p>
+      <p className="carousel-hint">Each step replaces the visible set. Use arrows, keyboard keys, dots, or swipe.</p>
     </div>
   );
 }

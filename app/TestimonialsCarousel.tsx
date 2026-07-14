@@ -8,12 +8,9 @@ type Testimonial = {
   title: string;
 };
 
-type Direction = "next" | "previous";
-
 export function TestimonialsCarousel({ testimonials }: { testimonials: Testimonial[] }) {
   const [visibleCount, setVisibleCount] = useState(3);
   const [activePage, setActivePage] = useState(0);
-  const [direction, setDirection] = useState<Direction>("next");
   const [touchStart, setTouchStart] = useState<number | null>(null);
 
   useEffect(() => {
@@ -38,18 +35,14 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Testimoni
 
   const pageCount = Math.ceil(testimonials.length / visibleCount);
   const startIndex = activePage * visibleCount;
-  const visibleTestimonials = [0, 1, 2].map(
-    (offset) => testimonials[(startIndex + offset) % testimonials.length],
-  );
+  const visibleTestimonials = testimonials.slice(startIndex, startIndex + visibleCount);
 
   const movePage = (amount: number) => {
-    setDirection(amount > 0 ? "next" : "previous");
     setActivePage((current) => (current + amount + pageCount) % pageCount);
   };
 
   const goToPage = (page: number) => {
     if (page === activePage) return;
-    setDirection(page > activePage ? "next" : "previous");
     setActivePage(page);
   };
 
@@ -73,13 +66,13 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Testimoni
       }}
     >
       <div
-        className={`testimonial-card-grid is-${direction}`}
+        className="testimonial-card-grid"
         key={`${visibleCount}-${activePage}`}
         aria-live="polite"
       >
         {visibleTestimonials.map((testimonial, offset) => (
           <figure
-            className="testimonial-card"
+            className="testimonial-card animate__animated animate__jello"
             key={`${startIndex}-${offset}-${testimonial.name}`}
             style={{ animationDelay: `${offset * 80}ms` }}
           >
@@ -90,7 +83,7 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Testimoni
               <span>{testimonial.title}</span>
             </figcaption>
             <span className="testimonial-card-number" aria-hidden="true">
-              {String(((startIndex + offset) % testimonials.length) + 1).padStart(2, "0")}
+              {String(startIndex + offset + 1).padStart(2, "0")}
             </span>
           </figure>
         ))}

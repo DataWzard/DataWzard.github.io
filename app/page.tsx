@@ -1,3 +1,4 @@
+import { ContactCard } from "./ContactCard";
 import { ResumeRequest } from "./ResumeRequest";
 import { TestimonialsCarousel } from "./TestimonialsCarousel";
 
@@ -178,7 +179,7 @@ export default function Home() {
           <a href="#experience">Experience</a>
           <a href="#about">About</a>
         </nav>
-        <a className="header-cta" href="mailto:jakestack91@gmail.com">Let&apos;s talk <span>↗</span></a>
+        <ContactCard />
       </header>
 
       <section className="hero" id="top">

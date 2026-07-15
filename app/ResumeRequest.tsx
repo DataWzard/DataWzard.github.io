@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
+import { trackAnalyticsEvent } from "./analytics-events";
 
 const requestEndpoint = process.env.NEXT_PUBLIC_RESUME_REQUEST_URL;
 
@@ -52,6 +53,7 @@ export function ResumeRequest() {
         mode: "no-cors",
       });
       form.reset();
+      trackAnalyticsEvent("resume_request_sent", { source: "portfolio" });
       setStatus("success");
     } catch {
       setStatus("error");
@@ -73,6 +75,8 @@ export function ResumeRequest() {
         className="button button-secondary resume-request-trigger"
         type="button"
         onClick={() => setIsOpen(true)}
+        data-analytics-event="resume_request_open"
+        data-analytics-label="Request resume"
       >
         Request r&eacute;sum&eacute; <span>&rarr;</span>
       </button>

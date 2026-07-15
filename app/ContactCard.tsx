@@ -60,7 +60,7 @@ export function ContactCard() {
 
   return (
     <>
-      <button className="header-cta contact-card-trigger" type="button" onClick={openCard} ref={triggerRef}>
+      <button className="header-cta contact-card-trigger" type="button" onClick={openCard} ref={triggerRef} data-analytics-event="contact_card_open" data-analytics-label="Let's talk">
         Let&apos;s talk <span>{"\u2197"}</span>
       </button>
 
@@ -86,6 +86,8 @@ export function ContactCard() {
                   key={link.label}
                   target={link.href.startsWith("http") ? "_blank" : undefined}
                   rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+                  data-analytics-event="contact_click"
+                  data-analytics-label={link.label}
                 >
                   <span>{link.label}</span>
                   <strong>{link.detail}</strong>

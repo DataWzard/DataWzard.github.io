@@ -99,12 +99,14 @@ export function TestimonialsCarousel({ testimonials }: { testimonials: Testimoni
               aria-label={`Show recommendation group ${page + 1} of ${pageCount}`}
               aria-current={page === activePage ? "true" : undefined}
               onClick={() => goToPage(page)}
+              data-analytics-event="recommendation_navigate"
+              data-analytics-label={`Group ${page + 1}`}
             />
           ))}
         </div>
         <div className="carousel-arrows">
-          <button type="button" aria-label="Previous recommendation group" onClick={() => movePage(-1)}>&larr;</button>
-          <button type="button" aria-label="Next recommendation group" onClick={() => movePage(1)}>&rarr;</button>
+          <button type="button" aria-label="Previous recommendation group" onClick={() => movePage(-1)} data-analytics-event="recommendation_navigate" data-analytics-label="Previous">&larr;</button>
+          <button type="button" aria-label="Next recommendation group" onClick={() => movePage(1)} data-analytics-event="recommendation_navigate" data-analytics-label="Next">&rarr;</button>
         </div>
       </div>
       <p className="carousel-hint">Each step replaces the visible set. Use arrows, keyboard keys, dots, or swipe.</p>

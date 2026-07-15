@@ -1,3 +1,4 @@
+import { AnalyticsPreferencesButton } from "./Analytics";
 import { ContactCard } from "./ContactCard";
 import { ResumeRequest } from "./ResumeRequest";
 import { TestimonialsCarousel } from "./TestimonialsCarousel";
@@ -237,7 +238,7 @@ export default function Home() {
                   <ul aria-label={`${project.title} technologies`}>
                     {project.tags.map((tag) => <li key={tag}>{tag}</li>)}
                   </ul>
-                  <a href={project.href} target="_blank" rel="noreferrer">{project.linkLabel} <span>↗</span></a>
+                  <a href={project.href} target="_blank" rel="noreferrer" data-analytics-event="project_click" data-analytics-label={project.title}>{project.linkLabel} <span>↗</span></a>
                 </div>
               </div>
             </article>
@@ -245,8 +246,8 @@ export default function Home() {
         </div>
 
         <div className="all-work">
-          <a href="https://github.com/DataWzard" target="_blank" rel="noreferrer">Browse all GitHub projects <span>↗</span></a>
-          <a href="https://public.tableau.com/app/profile/jacob.stack/vizzes" target="_blank" rel="noreferrer">Browse all Tableau dashboards <span>↗</span></a>
+          <a href="https://github.com/DataWzard" target="_blank" rel="noreferrer" data-analytics-event="portfolio_click" data-analytics-label="All GitHub projects">Browse all GitHub projects <span>↗</span></a>
+          <a href="https://public.tableau.com/app/profile/jacob.stack/vizzes" target="_blank" rel="noreferrer" data-analytics-event="portfolio_click" data-analytics-label="All Tableau dashboards">Browse all Tableau dashboards <span>↗</span></a>
         </div>
       </section>
 
@@ -304,7 +305,7 @@ export default function Home() {
         <p className="section-kicker">05 / Contact</p>
         <h2>Have a messy problem?<br /><em>Let&apos;s make it useful.</em></h2>
         <p>For analytics, business intelligence, solutions engineering, and data product conversations.</p>
-        <a className="contact-email" href="mailto:jakestack91@gmail.com">jakestack91@gmail.com <span>↗</span></a>
+        <a className="contact-email" href="mailto:jakestack91@gmail.com" data-analytics-event="contact_click" data-analytics-label="Email from contact section">jakestack91@gmail.com <span>↗</span></a>
       </section>
 
       <footer>
@@ -313,6 +314,7 @@ export default function Home() {
           <a href="https://www.linkedin.com/in/stack-jacob/" target="_blank" rel="noreferrer">LinkedIn</a>
           <a href="https://github.com/DataWzard" target="_blank" rel="noreferrer">GitHub</a>
           <a href="https://public.tableau.com/app/profile/jacob.stack/vizzes" target="_blank" rel="noreferrer">Tableau</a>
+          <AnalyticsPreferencesButton />
         </div>
         <a href="#top">Back to top ↑</a>
       </footer>
